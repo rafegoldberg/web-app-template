@@ -1,0 +1,99 @@
+@import "../../styles/$break.scss";
+@import "../../styles/$layout.scss";
+
+$pad: $layout-bodyPadding;
+
+.Pages {
+  #App > & {
+    flex: 1;
+    min-height: inherit;
+    display: inherit;
+    justify-content: inherit;
+    align-items: inherit;
+    @media (max-width: $break-mobile) {
+      flex-direction: column;
+    }
+  }
+  & > :last-child {
+    flex: 1;
+    @media (max-width: $break-mobile) {
+      display: flex;
+    }
+    > .Page {
+      margin: auto;
+    }
+  }
+}
+
+.Page {
+  width: 100vw;
+  max-width: 42em;
+  padding: $layout-bodyPadding;
+  box-sizing: border-box;
+  img[src*="hexy"] {
+    width: 4em;
+    float: right;
+    margin-left: 0.5em;
+    transform: translateY(-0.5em);
+  }
+}
+
+.PageList {
+  display: flex;
+  @media (min-width: $break-mobile) {
+    writing-mode: vertical-rl;
+    list-style: none;
+    height: 100vh;
+    align-self: flex-start;
+    position: sticky;
+    top: 0;
+    margin: 0;
+    box-sizing: border-box;
+    &-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-right: 1px solid;
+      box-shadow: 0 0 0 transparent;
+      & + & {
+        border-top: 1px solid;
+      }
+      &.active {
+        box-shadow: 4px 0 0;
+      }
+    }
+  }
+  @media (max-width: $break-mobile) {
+    position: sticky;
+    top: 0px;
+    width: 100%;
+    align-self: self-end;
+
+    margin: 3.5em 0 3.5em;
+    margin: 3.5em 0 0;
+
+    background: var(--matte);
+    transition: 0.3s;
+    z-index: 100;
+    &-item {
+      transition: 0.3s;
+      text-align: center;
+      border: solid var(--edge);
+      border-width: 1px 0;
+      & + & {
+        border-left: 1px solid var(--edge);
+      }
+    }
+  }
+  &-item {
+    flex: 1;
+    transition: 0.3s;
+    padding: 0.33em;
+    &:hover {
+      background: var(--matte-pop);
+    }
+    &.active {
+      background: var(--matte-hover);
+    }
+  }
+}

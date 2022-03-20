@@ -1,0 +1,11 @@
+{
+  "files.exclude": {
+    "{.[^env]*,Procfile}": true,
+    "dist": true,
+    ".vscode": true,
+    "{*cache,node_modules,*lock.json}": true,
+  },
+  "search.exclude": {
+    "{.[^env]*,Procfile}": false,
+  }
+}

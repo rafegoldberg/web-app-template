@@ -1,0 +1,22 @@
+{
+  "mongo": {
+    "debug": true,
+    "uri": "mongodb://localhost:27017/rg-test"
+  },
+  "cors": {
+    "enabled": true,
+    "options": {
+      "origin": "http://localhost:1234",
+      "credentials": true
+    }
+  },
+  "session": {
+    "expressSession": {
+      "secret": "This isn’t very secret. (Use a random SESSION_SECRET in prod.)",
+      "cookie": {
+        "maxAge": 86400000,
+        "secure": false
+      }
+    }
+  }
+}

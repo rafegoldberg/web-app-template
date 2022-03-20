@@ -1,0 +1,11 @@
+{
+  "port": "PORT",
+  "mongo": {
+    "uri": "MONGODB_URI"
+  },
+  "session": {
+    "expressSession": {
+      "secret": "SESSION_SECRET"
+    }
+  }
+}

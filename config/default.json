@@ -1,0 +1,18 @@
+{
+  "mongo": {
+    "debug": false,
+    "sessionCollection": "sessions"
+  },
+  "session": {
+    "mock": false,
+    "expressSession": {
+      "cookie": {
+        "maxAge": 1209600000,
+        "secure": true
+      },
+      "resave": true,
+      "saveUninitialized": true,
+      "unset": "destroy"
+    }
+  }
+}
