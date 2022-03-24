@@ -20,13 +20,12 @@ import User from "../db/models/user.mjs";
  * user is authenticated; otherwise, not.
  */
 passport.use(
-  new LocalStrategy(async function verify(username, password, cb) {
+  new LocalStrategy(async function verifyUser(username, password, next) {
     const user = await User.findOne({ username });
-
-    // if (err) return cb(err);
+    console.log("PASSPORT AUTH MIDDLEWARE", { user });
 
     if (!user)
-      return cb(null, false, {
+      return next(null, false, {
         message: "Wrong username or password.",
       });
 
@@ -37,13 +36,13 @@ passport.use(
       32,
       "sha256",
       function (err, hashed) {
-        if (err) return cb(err);
+        if (err) return next(err);
         if (!crypto.timingSafeEqual(user.password, hashed)) {
-          return cb(null, false, {
+          return next(null, false, {
             message: "Incorrect username or password.",
           });
         }
-        return cb(null, user);
+        return next(null, user);
       }
     );
   })
@@ -64,14 +63,14 @@ passport.use(
  * fetch todo records and render the user element in the navigation bar, that
  * information is stored in the session.
  */
-passport.serializeUser((user, cb) => {
+passport.serializeUser((user, next) => {
   process.nextTick(() => {
-    cb(null, { id: user.id, username: user.username });
+    next(null, { id: user.id, username: user.username });
   });
 });
 
-passport.deserializeUser((user, cb) => {
-  process.nextTick(() => cb(null, user));
+passport.deserializeUser((user, next) => {
+  process.nextTick(() => next(null, user));
 });
 
 const app = new express();
@@ -95,7 +94,7 @@ app.post(
   "/in",
   passport.authenticate("local", {
     successReturnToOrRedirect: "/",
-    failureRedirect: "/login",
+    failureRedirect: "/signin",
     failureMessage: true,
   })
 );
@@ -103,7 +102,7 @@ app.post(
 /* POST /sign/out
  * This route logs the user out.
  */
-app.post("/out", function (req, res, next) {
+app.post("/out", (req, res) => {
   req.logout();
   res.redirect("/");
 });
@@ -115,25 +114,14 @@ app.post("/out", function (req, res, next) {
  * The password is hashed and salted, and the new user record is inserted
  * into the database. If the user's correctly created, they get logged in.
  */
-app.post("/up", async function ({ body }, res) {
-  const salt = crypto.randomBytes(16);
-  return crypto.pbkdf2(
-    body.password,
-    salt,
-    310000,
-    32,
-    "sha256",
-    async (err, secret) => {
-      if (err) res.status(500).json({ error: err.message });
-      const user = new User({ ...body, salt, password: secret });
-      try {
-        const saved = await user.save();
-        return res.json(saved);
-      } catch (e) {
-        res.status(500).json({ error: e.message });
-      }
-    }
-  );
+app.post("/up", async ({ body }, res) => {
+  const user = new User(body);
+  try {
+    const saved = await user.save();
+    return res.json(saved);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 });
 
 export default app;
