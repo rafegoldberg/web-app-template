@@ -1,4 +1,5 @@
 {
+  "logs": false,
   "mongo": {
     "debug": false,
     "sessionCollection": "sessions"

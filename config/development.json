@@ -1,4 +1,5 @@
 {
+  "logs": true,
   "mongo": {
     "debug": true,
     "uri": "mongodb://localhost:27017/web-app-scaffolding"
@@ -12,7 +13,7 @@
   },
   "session": {
     "expressSession": {
-      "secret": "This isn’t very secret. (Use a random SESSION_SECRET in prod.)",
+      "secret": "USE A RANDOM $SESSION_SECRET IN PRODUCTION",
       "cookie": {
         "maxAge": 86400000,
         "secure": false
