@@ -1,6 +1,6 @@
 {
   "files.exclude": {
-    "{.[^env]*,Procfile}": true,
+    "**/{.[^env]*,Procfile}": true,
     "dist": true,
     ".vscode": true,
     "{*cache,node_modules,*lock.json}": true,
