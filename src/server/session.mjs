@@ -1,7 +1,8 @@
-import config from "config";
-import mongoSession from "connect-mongodb-session";
 import express from "express";
+import config from "config";
+import passport from "passport";
 import session from "express-session";
+import mongoSession from "connect-mongodb-session";
 
 const app = new express();
 
@@ -15,6 +16,15 @@ if (!config.session.mock) {
   store.on("error", (err) => console.error(err));
 
   app.use(session({ ...config.session.expressSession, store }));
+
+  app.use(passport.authenticate("session"));
+  app.use((req, res, next) => {
+    var msgs = req.session.messages || [];
+    res.locals.messages = msgs;
+    res.locals.hasMessages = !!msgs.length;
+    req.session.messages = [];
+    next();
+  });
 }
 
 export default app;

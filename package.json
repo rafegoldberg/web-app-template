@@ -7,9 +7,10 @@
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "build": "parcel build --dist-dir dist",
-    "start": "nodemon ./main.mjs",
     "clean": "rm -rf .parcel-cache/",
-    "dev": "npm run clean && NODE_ENV=local parcel",
+    "dev.server": "nodemon ./main.mjs",
+    "dev.client": "npm run clean && NODE_ENV=local parcel",
+    "start": "node ./main.mjs",
     "watch": "nodemon -e js,jsx,scss,mdx,png,jpg,jpeg --exec \"npm run build -- --no-optimize\" --ignore public --watch src/client"
   },
   "dependencies": {
@@ -17,6 +18,7 @@
     "@parcel/transformer-mdx": "^2.3.2",
     "argv": "^0.0.2",
     "config": "^3.3.7",
+    "connect-ensure-login": "^0.1.1",
     "connect-mongodb-session": "^3.1.1",
     "cors": "^2.8.5",
     "dotenv": "^14.3.2",
@@ -24,6 +26,8 @@
     "express": "^4.17.2",
     "express-session": "^1.17.2",
     "mongoose": "^6.1.8",
+    "passport": "^0.5.2",
+    "passport-local": "^1.0.0",
     "prop-types": "^15.8.1",
     "react": ">=16",
     "react-dom": ">=16",
