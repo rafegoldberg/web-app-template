@@ -1,7 +1,10 @@
 {
-  "logs": false,
+  "debug": false,
+  "paths": {
+    "login": "/sign/in"
+  },
   "mongo": {
-    "debug": false,
+    "debug": true,
     "sessionCollection": "sessions"
   },
   "session": {

@@ -1,7 +1,6 @@
 {
-  "logs": true,
+  "debug": true,
   "mongo": {
-    "debug": true,
     "uri": "mongodb://localhost:27017/web-app-scaffolding"
   },
   "cors": {

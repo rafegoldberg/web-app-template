@@ -1,5 +1,6 @@
 {
   "port": "PORT",
+  "debug": "DEBUG",
   "mongo": {
     "uri": "MONGODB_URI"
   },
