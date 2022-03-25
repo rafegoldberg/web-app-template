@@ -2,13 +2,23 @@
  * @link https://github.com/passport/todos-express-password/blob/master/routes/auth.js
  */
 import express from "express";
+import config from "config";
 import crypto from "crypto";
 import passport from "passport";
 import LocalStrategy from "passport-local";
+import { ensureLoggedIn } from "connect-ensure-login";
 
 import User from "../db/models/user.mjs";
 
-/* Configure password authentication strategy.
+const app = new express();
+
+/**AUTHENTICATION MIDDLEWARE
+ */
+export const ensureAuth = ensureLoggedIn(config.paths.login);
+
+/**AUTHENTICATION CONFIGURATION
+ */
+/* Set up Passport for password-based auth.
  *
  * The `LocalStrategy` authenticates users by verifying a username and password.
  * The strategy parses the username and password from the request and calls the
@@ -22,12 +32,8 @@ import User from "../db/models/user.mjs";
 passport.use(
   new LocalStrategy(async function verifyUser(username, password, next) {
     const user = await User.findOne({ username });
-    console.log("PASSPORT AUTH MIDDLEWARE", { user });
-
     if (!user)
-      return next(null, false, {
-        message: "Wrong username or password.",
-      });
+      return next(null, false, { message: "Incorrect username and password." });
 
     crypto.pbkdf2(
       password,
@@ -73,9 +79,9 @@ passport.deserializeUser((user, next) => {
   process.nextTick(() => next(null, user));
 });
 
-const app = new express();
-
-/* POST /sign/in
+/**AUTHENTICATION ROUTES
+ */
+/* Sign In
  * This route authenticates the user by verifying a username and password.
  *
  * A username and password are submitted to this route via an HTML form, which
@@ -94,20 +100,19 @@ app.post(
   "/in",
   passport.authenticate("local", {
     successReturnToOrRedirect: "/",
-    failureRedirect: "/signin",
-    failureMessage: true,
+    failureMessage: "Incorrect username & password.",
   })
 );
 
-/* POST /sign/out
+/* Sign Out
  * This route logs the user out.
  */
-app.post("/out", (req, res) => {
+app.all("/out", (req, res) => {
   req.logout();
   res.redirect("/");
 });
 
-/* POST /sign/up
+/* Sign Up
  * This route creates a new user account.
  *
  * A username and password are submitted to this route via a POST request.
