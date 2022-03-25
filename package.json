@@ -7,9 +7,10 @@
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "build": "parcel build --dist-dir dist",
-    "start": "nodemon ./main.mjs",
     "clean": "rm -rf .parcel-cache/",
-    "dev": "npm run clean && NODE_ENV=local parcel",
+    "dev.server": "nodemon ./main.mjs",
+    "dev.client": "npm run clean && NODE_ENV=local parcel",
+    "start": "node ./main.mjs",
     "watch": "nodemon -e js,jsx,scss,mdx,png,jpg,jpeg --exec \"npm run build -- --no-optimize\" --ignore public --watch src/client"
   },
   "dependencies": {

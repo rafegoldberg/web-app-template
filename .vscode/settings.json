@@ -6,6 +6,6 @@
     "{*cache,node_modules,*lock.json}": true,
   },
   "search.exclude": {
-    "{.[^env]*,Procfile}": false,
+    "**/{.[^env]*,Procfile}": false,
   }
 }
