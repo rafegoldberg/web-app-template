@@ -27,6 +27,7 @@ app.use((req, res, next) => {
     console.log(`${req.method.toUpperCase()} ${req.url}`, {
       isAjax,
       // sesh: req.session,
+      csrf: req.csrfToken?.(),
       user: req.session.passport?.user?.name,
     });
   }
