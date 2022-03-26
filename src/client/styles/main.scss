@@ -20,14 +20,60 @@ body {
     sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
 }
 
-form {
+main {
+  padding: 1em;
+  box-sizing: border-box;
+  max-width: 100vw;
+}
+
+header {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.33em;
+  > * {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.15em;
+    a {
+      padding: 3px;
+      &.active {
+        background: #eee;
+        border-radius: 4px;
+        text-decoration: none;
+      }
+    }
+  }
+  h3 a {
+    text-decoration: none;
+  }
+}
+
+a {
+  color: inherit;
+}
+
+hr {
+  border: solid #ddd;
+  border-width: 0.88px 0 0;
+  width: 25em;
+  max-width: 100%;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+form {
+  display: inline-flex;
   flex-flow: nowrap column;
-  gap: .5em;
+  gap: 0.5em;
   label {
     display: inline-flex;
     gap: inherit;
-    > span:first-child {
+    > :first-child {
       flex: 1;
     }
   }
@@ -36,7 +82,7 @@ form {
     justify-content: space-between;
     align-items: baseline;
     padding: 0.66em;
-    border: solid .88px;
+    border: solid 0.88px;
     legend {
       font-size: small;
       padding: 0;

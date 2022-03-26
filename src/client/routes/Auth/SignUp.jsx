@@ -1,8 +1,8 @@
 import React from "react";
-import HTMLForm from "../../ui/HTMLForm";
+import { AuthForm } from ".";
 
 const SignUp = () => (
-  <HTMLForm action="sign/up" method="POST">
+  <AuthForm action="sign/up" method="POST">
     <label>
       <span>Full Name:</span>
       <input type="text" name="name" required />
@@ -15,8 +15,8 @@ const SignUp = () => (
       <span>Password:</span>
       <input type="password" name="password" required />
     </label>
-    <button type="submit">Submit</button>
-  </HTMLForm>
+    <button type="submit">Sign Up</button>
+  </AuthForm>
 );
 
 export default SignUp;

@@ -12,25 +12,38 @@ import User from "../db/models/user.mjs";
 
 const app = new express();
 
-/**AUTHENTICATION MIDDLEWARE
+/**AUTHENTICATION MIDDLEWARES
  */
-export const ensureAuth = ensureLoggedIn(config.paths.login);
+// export const ensureAuth = ensureLoggedIn(config.paths.login);
+export const ensureAuth = (req, res, next) => {
+  // console.log({
+  //   req: Object.keys(req),
+  //   res: Object.keys(res),
+  // });
+  next();
+};
+
+const getClientUserSession = (req, res) => {
+  const {
+    passport: { user = {} },
+    returnTo: redirect = "/",
+  } = req.session || {};
+  // console.log("getClientUserSession", {
+  //   req: { isAuthenticated: req.isAuthenticated },
+  //   sesh: req.session,
+  //   authInfo: req.authInfo,
+  //   set: req.session.set,
+  // });
+  return res.json({ user, redirect });
+};
 
 /**AUTHENTICATION CONFIGURATION
  */
 /* Set up Passport for password-based auth.
- *
- * The `LocalStrategy` authenticates users by verifying a username and password.
- * The strategy parses the username and password from the request and calls the
- * `verify` function.
- *
- * The `verify` function queries the database for the user record and verifies
- * the password by hashing the password supplied by the user and comparing it to
- * the hashed password stored in the database. If the comparison succeeds, the
- * user is authenticated; otherwise, not.
  */
 passport.use(
   new LocalStrategy(async function verifyUser(username, password, next) {
+    // console.log(username, password);
     const user = await User.findOne({ username });
     if (!user)
       return next(null, false, { message: "Incorrect username and password." });
@@ -55,23 +68,14 @@ passport.use(
 );
 
 /* Configure session management.
- *
- * When a login session is established, information about the user will be
- * stored in the session. This information is supplied by the `serializeUser`
- * function, which is yielding the user ID and username.
- *
- * As the user interacts with the app, subsequent requests will be authenticated
- * by verifying the session. The same user information that was serialized at
- * session establishment will be restored when the session is authenticated by
- * the `deserializeUser` function.
- *
- * Since every request to the app needs the user ID and username, in order to
- * fetch todo records and render the user element in the navigation bar, that
- * information is stored in the session.
  */
 passport.serializeUser((user, next) => {
   process.nextTick(() => {
-    next(null, { id: user.id, username: user.username });
+    next(null, {
+      id: user.id,
+      username: user.username,
+      name: user.name,
+    });
   });
 });
 
@@ -82,27 +86,8 @@ passport.deserializeUser((user, next) => {
 /**AUTHENTICATION ROUTES
  */
 /* Sign In
- * This route authenticates the user by verifying a username and password.
- *
- * A username and password are submitted to this route via an HTML form, which
- * was rendered by the `GET /login` route. The username and password is
- * authenticated using the `local` strategy. The strategy will parse the
- * username and password from the request and call the `verify` function.
- *
- * Upon successful authentication, a login session will be established. As the
- * user interacts with the app, by clicking links and submitting forms, the
- * subsequent requests will be authenticated by verifying the session.
- *
- * When authentication fails, the user will be re-prompted to login and shown
- * a message informing them of what went wrong.
  */
-app.post(
-  "/in",
-  passport.authenticate("local", {
-    successReturnToOrRedirect: "/",
-    failureMessage: "Incorrect username & password.",
-  })
-);
+app.post("/in", passport.authenticate("local"), getClientUserSession);
 
 /* Sign Out
  * This route logs the user out.
@@ -113,17 +98,16 @@ app.all("/out", (req, res) => {
 });
 
 /* Sign Up
- * This route creates a new user account.
- *
- * A username and password are submitted to this route via a POST request.
- * The password is hashed and salted, and the new user record is inserted
- * into the database. If the user's correctly created, they get logged in.
+ * Create a new user account.
  */
-app.post("/up", async ({ body }, res) => {
-  const user = new User(body);
+app.post("/up", async (req, res) => {
+  const user = new User(req.body);
   try {
-    const saved = await user.save();
-    return res.json(saved);
+    await user.save();
+    req.login(user, (e) => {
+      if (e) return res.status(400).json({ error: e });
+      return getClientUserSession(req, res);
+    });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }

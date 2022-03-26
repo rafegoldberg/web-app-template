@@ -1,6 +1,7 @@
 import express from "express";
 import config from "config";
 import cors from "cors";
+import cookies from "cookie-parser";
 
 import connect from "../db/connect.mjs";
 import sessions from "./session.mjs";
@@ -11,13 +12,27 @@ import statics from "./statics.mjs";
 
 const app = express();
 
-app.use(express.json());
-
-if (config.cors?.enabled) app.use(cors(config.cors.options));
-
 connect();
 
+if (config.cors?.enabled) app.use(cors(config.cors.options));
+app.use(express.json());
+app.use(cookies());
+
 app.use(sessions);
+
+app.use((req, res, next) => {
+  if (config.debug) {
+    const accepts = req.accepts(["html", "json"]);
+    const isAjax = req.xhr || accepts === "json";
+    console.log(`${req.method.toUpperCase()} ${req.url}`, {
+      isAjax,
+      // sesh: req.session,
+      user: req.session.passport?.user?.name,
+    });
+  }
+  next();
+});
+
 app.use("/sign", auth);
 
 app.use("/api/pages", pagesAPI);

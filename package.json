@@ -7,11 +7,11 @@
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "build": "parcel build --dist-dir dist",
-    "clean": "rm -rf .parcel-cache/",
-    "dev.server": "nodemon ./main.mjs",
-    "dev.client": "npm run clean && NODE_ENV=local parcel",
+    "clean": "rm -rf .parcel-cache/ dist/*",
+    "dev.server": "nodemon ./main.mjs --ignore dist/*",
+    "dev.client": "npm run clean && NODE_ENV=local parcel --hmr-port=2468",
     "start": "node ./main.mjs",
-    "watch": "nodemon -e js,jsx,scss,mdx,png,jpg,jpeg --exec \"npm run build -- --no-optimize\" --ignore public --watch src/client"
+    "watch": "npx concurrently -c magenta,cyan -n @ npm:dev.* --hide"
   },
   "dependencies": {
     "@mdx-js/runtime": "^1.6.22",
@@ -20,11 +20,14 @@
     "config": "^3.3.7",
     "connect-ensure-login": "^0.1.1",
     "connect-mongodb-session": "^3.1.1",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "csurf": "^1.11.0",
     "dotenv": "^14.3.2",
     "dotenv-expand": "^8.0.1",
     "express": "^4.17.2",
     "express-session": "^1.17.2",
+    "hbs": "^4.2.0",
     "mongoose": "^6.1.8",
     "passport": "^0.5.2",
     "passport-local": "^1.0.0",

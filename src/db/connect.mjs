@@ -12,7 +12,7 @@ if (config.debug) {
 export const disconnect = m.disconnect;
 
 export const connect = () => {
-  m.set("debug", config.debug || config.mongo.debug);
+  m.set("debug", config.debug && config.mongo.debug);
   return m.connect(config.mongo.uri, {
     autoIndex: true,
     autoCreate: true,

@@ -15,16 +15,16 @@ if (!config.session.mock) {
   });
   store.on("error", (err) => console.error(err));
 
-  app.use(session({ ...config.session.expressSession, store }));
+  app.use(
+    session({
+      resave: false,
+      saveUninitialized: false,
+      ...config.session.expressSession,
+      store,
+    })
+  );
 
   app.use(passport.authenticate("session"));
-  app.use((req, res, next) => {
-    var msgs = req.session.messages || [];
-    res.locals.messages = msgs;
-    res.locals.hasMessages = !!msgs.length;
-    req.session.messages = [];
-    next();
-  });
 }
 
 export default app;
