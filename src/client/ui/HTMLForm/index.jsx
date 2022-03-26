@@ -1,36 +1,40 @@
 import React, { useRef } from "react";
-import { useNavigate } from "react-router-dom";
 
 const { SERVER_URI } = process.env;
 
-const HTMLForm = ({ children, action, method = "GET" }) => {
+const HTMLForm = ({
+  action,
+  children,
+  headers = {},
+  method = "GET",
+  onError,
+  onSubmit,
+}) => {
   const $form = useRef(null);
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const { current: el } = $form;
-    const data = Object.fromEntries(new FormData(el));
-
+    const data = Object.fromEntries((window.formdata = new FormData(el)));
+    console.log({
+      _csrf: document.head.querySelector("meta[name=csrf]").content,
+    });
     const path = `${SERVER_URI}/${action}`;
     const res = await fetch(path, {
       method,
-      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        ...headers,
+      },
       body: JSON.stringify(data),
     });
-
-    if (res.redirected) return navigate(new URL(`${res.url}`).pathname);
-
-    if (!res.ok) {
-      const text = await res.text();
-      console.error(text);
-      return;
+    if (res.ok) {
+      if (typeof onSubmit === "function") onSubmit(res);
+    } else {
+      if (typeof onError === "function") onError(res);
     }
-
-    const { error, ...json } = await res.json();
-    if (error) console.error(error);
-    else console.log(json);
   };
 
   return (

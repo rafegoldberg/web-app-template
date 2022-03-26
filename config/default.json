@@ -13,10 +13,7 @@
       "cookie": {
         "maxAge": 1209600000,
         "secure": true
-      },
-      "resave": true,
-      "saveUninitialized": true,
-      "unset": "destroy"
+      }
     }
   }
 }
