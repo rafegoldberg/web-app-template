@@ -28,7 +28,10 @@ const HTMLForm = ({
         Accept: "application/json",
         ...headers,
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        ...data,
+        _csrf: document.head.querySelector("meta[name=csrf]").content,
+      }),
     });
     if (res.ok) {
       if (typeof onSubmit === "function") onSubmit(res);

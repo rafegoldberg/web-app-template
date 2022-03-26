@@ -1,5 +1,6 @@
 import express from "express";
 import config from "config";
+import csrf from "csurf";
 import passport from "passport";
 import session from "express-session";
 import mongoSession from "connect-mongodb-session";
@@ -23,6 +24,8 @@ if (!config.session.mock) {
       store,
     })
   );
+
+  app.use(csrf({ cookie: true }));
 
   app.use(passport.authenticate("session"));
 }
