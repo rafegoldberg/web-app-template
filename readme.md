@@ -6,7 +6,7 @@
 Getting Started
 ---
 
-To build on this app, clone the repo, `cd` in, run `npm install`, and [configure your local environment](#configuration).[^1] Next, run the `dev.server` and `dev.client` scripts simultaneously. This will spin up both the API (on [localhost:5678][server]) and React dev server (at [localhost:1234][client]) with hot module reloading.
+To build on this app, clone the repo, `cd` in, run `npm install`, and [set up your local env](#configuration).[^mongo] Next, run the `dev.server` and `dev.client` scripts simultaneously. This will spin up both the API (on [localhost:5678][server]) and React dev server (at [localhost:1234][client]) with hot module reloading.
 
 Here are a few key source files + folders:
 
@@ -36,14 +36,14 @@ SESSION_SECRET=somerandomlygeneratedhash
 ```
 
 
-[client]: http://localhost:1234
-[server]: http://localhost:5678/api/pages
+[client]: http://localhost:1234 "Local React Dev Server"
+[server]: http://localhost:5678/api/pages "Local Express API Server"
 
-[Route Components]: https://github.com/rafegoldberg/web-app-template/tree/main/src/client/routes
-[Schema Models]: https://github.com/rafegoldberg/web-app-template/tree/main/src/db/models
-[API Endpoints]: https://github.com/rafegoldberg/web-app-template/tree/main/src/server/api
+[Route Components]: https://github.com/rafegoldberg/web-app-template/tree/main/src/client/routes "~/src/client/routes/"
+[Schema Models]: https://github.com/rafegoldberg/web-app-template/tree/main/src/db/models "~/src/db/models/"
+[API Endpoints]: https://github.com/rafegoldberg/web-app-template/tree/main/src/server/api "~/src/server/api/"
 
-[m]: https://www.npmjs.com/package/m
+[m]: https://www.npmjs.com/package/m "m—MongoDB Version Manager"
 
 
-[^1]: These guides assume you already have Mongo running on your local machine. You can use [**`m`**][m] to manage installation.
+[^mongo]: These guides assume you already have Mongo running on your machine. If not, you can [use **`m`** to install and manage your local Mongo version][m].
