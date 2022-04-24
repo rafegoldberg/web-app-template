@@ -28,7 +28,7 @@ SERVER_URI=http://localhost:$PORT
 
 ### Heroku
 
-If you plan to run your app on a Heroku box, you'll need to add the following environment variables via the dashboard:
+If you plan to run the app on a Heroku box, you'll need to add the following environment variables via the dashboard:
 
 ```shell
 MONGODB_URI=mongodb+srv://user:p***d@cluster.mongodb.net/some-collection
