@@ -19,7 +19,7 @@ Configuration
 
 ### Locally
 
-After cloning this repo, you'll need to add a new `.env` file to the root with these default values:
+After cloning this repo, you'll need to add a new `.env` file to the root with these default values:[^1]
 
 ```shell
 PORT=5678
