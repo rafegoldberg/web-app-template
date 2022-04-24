@@ -6,7 +6,7 @@
 Getting Started
 ---
 
-To build on this app, clone the repo, `cd` in, run `npm install`, and [set up your local env](#configuration).[^mongo] Next, run the `dev.server` and `dev.client` scripts simultaneously. This will spin up both the API (on [localhost:5678][server]) and React dev server (at [localhost:1234][client]) with hot module reloading.
+To build off of this app, fork the repo, `cd` in, run `npm install`, and [set up your local env](#configuration).[^mongo] Next, run the `dev.server` and `dev.client` scripts simultaneously. This will spin up both the API (on [localhost:5678][server]) and React dev server (at [localhost:1234][client]) with hot module reloading.
 
 Here are a few key source files + folders:
 
