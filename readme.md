@@ -46,4 +46,4 @@ SESSION_SECRET=somerandomlygeneratedhash
 [m]: https://www.npmjs.com/package/m "m—MongoDB Version Manager"
 
 
-[^mongo]: These guides assume you already have Mongo running on your machine. If not, you can [use **`m`** to install and manage your local Mongo version][m].
+[^mongo]: These guides assume you already have Mongo running on your machine. [Use **`m`**][m] to install and manage Mongo locally.
